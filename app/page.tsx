@@ -34,7 +34,31 @@ interface DailyPrompt {
   partner_answer: string | null;
 }
 
+function ExpandableAnswer({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = text.length > 180 || text.split("\n").length > 3;
 
+  return (
+    <div className="mt-2 overflow-hidden">
+      <p
+        className={`text-sm font-medium leading-relaxed text-white break-words whitespace-pre-wrap transition-all ${
+          !expanded && isLong ? "line-clamp-3" : ""
+        }`}
+      >
+        &ldquo;{text}&rdquo;
+      </p>
+      {isLong && (
+        <button
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-[var(--a)] hover:underline focus:outline-none transition-colors"
+        >
+          {expanded ? "Show less" : "Read more"}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const router = useRouter();
@@ -340,23 +364,28 @@ export default function Home() {
                   placeholder={`Write something honest for ${partnerFirst}…`}
                   maxLength={2000}
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-white/20 bg-white/[.08] p-4 text-base sm:text-sm text-white placeholder-white/30 outline-none focus:border-[var(--a)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--a),transparent_80%)]"
+                  className="w-full max-h-48 resize-none rounded-2xl border border-white/20 bg-white/[.08] p-4 text-base sm:text-sm text-white placeholder-white/30 outline-none focus:border-[var(--a)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--a),transparent_80%)] overflow-y-auto break-words"
                 />
-                <div className="flex items-center gap-3">
-                  <motion.button
-                    className="button-primary"
-                    whileTap={{ scale: 0.94 }}
-                    onClick={submitAnswer}
-                    disabled={submitting || !answerText.trim()}
-                  >
-                    {submitting ? "Saving…" : "Save answer"} <ArrowRight size={15} />
-                  </motion.button>
-                  <button
-                    className="text-sm font-medium text-white/50 hover:text-white"
-                    onClick={() => { setAnswering(false); setAnswerText(""); }}
-                  >
-                    Cancel
-                  </button>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <motion.button
+                      className="button-primary"
+                      whileTap={{ scale: 0.94 }}
+                      onClick={submitAnswer}
+                      disabled={submitting || !answerText.trim()}
+                    >
+                      {submitting ? "Saving…" : "Save answer"} <ArrowRight size={15} />
+                    </motion.button>
+                    <button
+                      className="text-sm font-medium text-white/50 hover:text-white"
+                      onClick={() => { setAnswering(false); setAnswerText(""); }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <span className="text-[11px] font-medium text-white/35">
+                    {answerText.length}/2000
+                  </span>
                 </div>
               </motion.div>
             )}
@@ -393,7 +422,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="mt-5 rounded-2xl border border-white/15 bg-white/[.08] p-4 backdrop-blur-md"
+                className="mt-5 rounded-2xl border border-white/15 bg-white/[.08] p-4 backdrop-blur-md overflow-hidden"
               >
                 <div className="flex items-center gap-2">
                   <span className="flex h-5 items-center rounded-full bg-gradient-to-r from-[var(--a)] to-[var(--b)] px-2.5 text-[10px] font-black uppercase tracking-wider text-white">
@@ -401,9 +430,7 @@ export default function Home() {
                   </span>
                   <span className="text-xs text-white/50">Your answer</span>
                 </div>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-white">
-                  &ldquo;{prompt.my_answer}&rdquo;
-                </p>
+                <ExpandableAnswer text={prompt.my_answer} />
               </motion.div>
             )}
 
@@ -412,7 +439,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-3 rounded-2xl border border-[var(--a)]/30 bg-[color-mix(in_srgb,var(--a),transparent_90%)] p-4 backdrop-blur-md"
+                className="mt-3 rounded-2xl border border-[var(--a)]/30 bg-[color-mix(in_srgb,var(--a),transparent_90%)] p-4 backdrop-blur-md overflow-hidden"
               >
                 <div className="flex items-center gap-2">
                   <span className="flex h-5 items-center rounded-full bg-gradient-to-r from-[var(--b)] to-[#9333ea] px-2.5 text-[10px] font-black uppercase tracking-wider text-white">
@@ -421,9 +448,7 @@ export default function Home() {
                   <Heart className="shrink-0 fill-[var(--a)] text-[var(--a)]" size={14} />
                   <span className="text-xs text-white/50">{partnerFirst}&apos;s answer</span>
                 </div>
-                <p className="mt-2 text-sm font-semibold leading-relaxed text-white">
-                  &ldquo;{prompt.partner_answer}&rdquo;
-                </p>
+                <ExpandableAnswer text={prompt.partner_answer} />
               </motion.div>
             )}
           </div>

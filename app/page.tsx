@@ -325,7 +325,7 @@ export default function Home() {
           </div>
         </header>
         {/* spacer so fixed header doesn't overlap content */}
-        <div className="h-[calc(4rem+env(safe-area-inset-top,0px))]" />
+        <div className="h-[calc(4rem+env(safe-area-inset-top,0px))]" />
 
         <div className="mx-auto max-w-xl">
           {/* ══ ROW 1 — TODAY'S QUESTION (full width card) ═══════════════════════ */}
@@ -651,6 +651,7 @@ export default function Home() {
             </motion.article>
           </Link>
         </div>
+        </div>{/* end max-w-xl */}
 
         {/* ══ BOTTOM NAV ══════════════════════════════════════════════════════ */}
         <nav className="nav-bar fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-md rounded-full p-2">

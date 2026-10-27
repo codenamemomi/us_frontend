@@ -262,11 +262,11 @@ export default function Home() {
     : `Waiting for ${partnerFirst}`;
 
   return (
-    <main className="aurora min-h-screen overflow-x-hidden px-5 page-safe-bottom text-white sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-xl">
+    <main className="aurora min-h-screen px-5 page-safe-bottom text-white sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl">
 
         {/* ══ HEADER: (o) Together v                   you+her ═══════════════ */}
-        <header className="header-safe-top sticky z-20 -mx-5 sm:-mx-8 lg:-mx-12 mb-4 flex items-center justify-between px-5 sm:px-8 lg:px-12 pb-4 backdrop-blur-xl bg-[#090514]/85 border-b border-white/[0.06]">
+        <header className="header-safe-top sticky top-0 z-20 -mx-5 sm:-mx-8 lg:-mx-12 mb-4 flex items-center justify-between px-5 sm:px-8 lg:px-12 pb-4 backdrop-blur-xl bg-[#090514]/85 border-b border-white/[0.06]">
           {/* left: us. logo + mode pill */}
           <div className="flex items-center gap-3">
             <Link href="/" className="font-display text-xl font-bold tracking-tight">
@@ -325,7 +325,8 @@ export default function Home() {
           </div>
         </header>
 
-        {/* ══ ROW 1 — TODAY'S QUESTION (full width card) ═══════════════════════ */}
+        <div className="mx-auto max-w-xl">
+          {/* ══ ROW 1 — TODAY'S QUESTION (full width card) ═══════════════════════ */}
         <motion.article
           className="glass glow relative mt-7 overflow-hidden p-6 sm:p-8"
           whileHover={{ y: -2 }}

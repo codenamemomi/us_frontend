@@ -1,0 +1,455 @@
+@import "tailwindcss";
+
+/* ── palette tokens ───────────────────────────────────────────────────────── */
+:root {
+  --a: #ff007f;   /* electric fuchsia-rose */
+  --b: #ff5500;   /* hyper electric orange */
+  --c: #8b5cf6;   /* electric violet */
+  --background: #080811;
+  --foreground: #f8fafc;
+}
+
+[data-mode="on_call"] {
+  --a: #00e5ff;   /* neon cyan */
+  --b: #8b5cf6;   /* electric violet */
+  --c: #2563eb;   /* electric royal blue */
+}
+
+[data-mode="bored"] {
+  --a: #ff007f;   /* neon fuchsia */
+  --b: #00ff66;   /* electric neon lime */
+  --c: #ffdf00;   /* radiant solar yellow */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+/* ── base ─────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+  overflow-x: hidden;
+}
+button { cursor: pointer; }
+.font-display { font-family: var(--font-display), sans-serif; }
+
+/* ── aurora blobs (vivid, colorful, high-saturation) ──────────────────────── */
+.aurora {
+  position: relative;
+  background: radial-gradient(circle at 50% 10%, color-mix(in srgb, var(--a), transparent 88%), transparent 60%);
+}
+
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: 0.72;
+  pointer-events: none;
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+  will-change: transform, background;
+}
+
+/* top-left primary blob */
+.aurora::before {
+  width: 70vmax;
+  height: 70vmax;
+  top: -24vmax;
+  left: -20vmax;
+  background: radial-gradient(circle, var(--a) 0%, color-mix(in srgb, var(--b), transparent 25%) 100%);
+  animation: drift-primary 16s ease-in-out infinite alternate;
+}
+
+/* bottom-right secondary blob */
+.aurora::after {
+  width: 65vmax;
+  height: 65vmax;
+  bottom: -22vmax;
+  right: -18vmax;
+  background: radial-gradient(circle, var(--b) 0%, color-mix(in srgb, var(--c), transparent 30%) 100%);
+  animation: drift-secondary 20s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift-primary {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(8vmax, 6vmax) scale(1.15); }
+}
+
+@keyframes drift-secondary {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-7vmax, -5vmax) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora::before, .aurora::after { animation: none; }
+}
+
+/* ── glass cards ──────────────────────────────────────────────────────────── */
+.glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 16px 40px -15px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass:hover {
+  border-color: color-mix(in srgb, var(--a), white 45%);
+  box-shadow: 0 20px 50px -10px color-mix(in srgb, var(--a), transparent 75%), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.glow {
+  box-shadow: 0 0 90px -20px var(--a), 0 16px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* ── typography utilities ─────────────────────────────────────────────────── */
+.eyebrow {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ── mode pill ────────────────────────────────────────────────────────────── */
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 20px -5px color-mix(in srgb, var(--a), transparent 70%);
+  transition: all 0.25s ease;
+}
+
+.mode-pill:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mode-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--a), var(--b));
+  box-shadow: 0 0 12px var(--a);
+}
+
+/* ── buttons ──────────────────────────────────────────────────────────────── */
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: linear-gradient(110deg, var(--a), var(--b));
+  padding: 12px 22px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 8px 24px -6px color-mix(in srgb, var(--a), transparent 30%);
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.button-primary:hover {
+  opacity: 0.94;
+  box-shadow: 0 12px 30px -4px color-mix(in srgb, var(--a), transparent 20%);
+}
+
+.button-primary:active {
+  transform: scale(0.96);
+}
+
+/* ── question card orbit ring ─────────────────────────────────────────────── */
+.question-orbit {
+  position: absolute;
+  right: -14%;
+  top: -30%;
+  width: 55%;
+  height: 120%;
+  border: 1px solid color-mix(in srgb, var(--a), transparent 60%);
+  border-radius: 50%;
+  transform: rotate(-24deg);
+  pointer-events: none;
+}
+
+/* ── bored / ping card ────────────────────────────────────────────────────── */
+.bored-card {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--a), transparent 65%), color-mix(in srgb, var(--b), transparent 85%));
+}
+
+@keyframes pulse-bored {
+  0%, 100% {
+    box-shadow: 0 0 24px -6px var(--a), inset 0 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 65px 4px var(--a), inset 0 1px rgba(255, 255, 255, 0.4);
+    border-color: color-mix(in srgb, var(--a), white 60%);
+  }
+}
+
+.bored-pulse {
+  animation: pulse-bored 2.4s ease-in-out infinite;
+}
+
+/* ── bottom nav ───────────────────────────────────────────────────────────── */
+.nav-bar {
+  /* deep frosted glass */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  /* ambient glow from active mode color */
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.06) inset,
+    0 8px 32px -4px rgba(0, 0, 0, 0.6),
+    0 0 40px -12px color-mix(in srgb, var(--a), transparent 65%);
+  transition: box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 999px;
+  padding: 9px 8px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition:
+    color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
+}
+
+.nav-item span,
+.nav-item svg {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+.nav-item svg {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.25s ease;
+}
+
+.nav-item.active {
+  color: #fff;
+}
+
+.nav-item.active svg {
+  transform: scale(1.15) translateY(-1px);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--a), transparent 15%));
+}
+
+/* sliding pill behind active tab */
+.nav-active-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--a), transparent 65%) 0%,
+    color-mix(in srgb, var(--b), transparent 80%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--a), transparent 50%);
+  box-shadow:
+    0 0 20px -2px color-mix(in srgb, var(--a), transparent 40%),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── safe-area-aware bottom padding for page content ─────────────────────── */
+.page-safe-bottom {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── safe-area-aware sticky header (iOS notch / Dynamic Island) ───────────── */
+/*    top: 0 allows the frosted glass background to bleed behind the status bar */
+/*    (clock, battery, notch/Dynamic Island). The internal padding-top pushes   */
+/*    header text and icons down so they sit comfortably below it.              */
+.header-safe-top {
+  position: sticky;
+  top: 0;
+  padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+}
+
+/* ── mode sheet options ───────────────────────────────────────────────────── */
+.mode-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 13px;
+  border-radius: 18px;
+  padding: 13px;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.75);
+  transition: background 0.2s, color 0.2s;
+}
+
+.mode-option:hover, .mode-option.selected {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.mode-option strong, .mode-option small { display: block; }
+.mode-option small {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
+.mode-option-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.mode-option-icon.together {
+  background: linear-gradient(135deg, #ff007f, #ff5500);
+}
+
+.mode-option-icon.on_call {
+  background: linear-gradient(135deg, #00e5ff, #8b5cf6);
+}
+
+.mode-option-icon.bored {
+  background: linear-gradient(135deg, #ff007f, #00ff66);
+  color: #080811;
+}
+
+/* ── avatar pair (vibrant glowing gradient circles) ───────────────────────── */
+.avatar-pair {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-me,
+.avatar-partner,
+.avatar-pair > span:not(.presence-dot) {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 800;
+  border: 2px solid var(--background);
+}
+
+.avatar-me,
+.avatar-pair > span:first-of-type {
+  background: linear-gradient(135deg, var(--a), var(--b));
+  color: #fff;
+  z-index: 2;
+  box-shadow: 0 0 16px -2px var(--a);
+}
+
+.avatar-partner,
+.avatar-pair > span:nth-of-type(2) {
+  background: linear-gradient(135deg, var(--b), var(--c));
+  color: #fff;
+  margin-left: -12px;
+  z-index: 1;
+  box-shadow: 0 0 16px -2px var(--b);
+}
+
+/* ── form fields ──────────────────────────────────────────────────────────── */
+.field {
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.field input, .field textarea {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 13px 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus, .field textarea:focus {
+  border-color: var(--a);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--a), transparent 80%);
+}
+
+.field input::placeholder, .field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.field.has-error input, .field.has-error textarea {
+  border-color: #ff4d6d;
+}
+
+.field-error {
+  color: #ff6b8b;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 500;
+  display: block;
+}
+
+/* ── banners ──────────────────────────────────────────────────────────────── */
+.error-banner {
+  background: rgba(255, 77, 109, 0.16);
+  border: 1px solid rgba(255, 77, 109, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #ff94a8;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-banner {
+  background: rgba(255, 85, 0, 0.15);
+  border: 1px solid rgba(255, 85, 0, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #ffb396;
+  margin-top: 16px;
+}

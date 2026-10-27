@@ -299,8 +299,6 @@ button { cursor: pointer; }
 /*    (clock, battery, notch/Dynamic Island). The internal padding-top pushes   */
 /*    header text and icons down so they sit comfortably below it.              */
 .header-safe-top {
-  position: sticky;
-  top: 0;
   padding-top: calc(1rem + env(safe-area-inset-top, 0px));
 }
 

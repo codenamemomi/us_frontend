@@ -266,7 +266,7 @@ export default function Home() {
       <div className="mx-auto max-w-6xl">
 
         {/* ══ HEADER: (o) Together v                   you+her ═══════════════ */}
-        <header className="header-safe-top sticky top-0 z-20 -mx-5 sm:-mx-8 lg:-mx-12 mb-4 flex items-center justify-between px-5 sm:px-8 lg:px-12 pb-4 backdrop-blur-xl bg-[#090514]/85 border-b border-white/[0.06]">
+        <header className="header-safe-top fixed inset-x-0 top-0 z-20 flex items-center justify-between px-5 sm:px-8 lg:px-12 pb-4 backdrop-blur-xl bg-[#090514]/85 border-b border-white/[0.06]">
           {/* left: us. logo + mode pill */}
           <div className="flex items-center gap-3">
             <Link href="/" className="font-display text-xl font-bold tracking-tight">
@@ -324,6 +324,8 @@ export default function Home() {
             </div>
           </div>
         </header>
+        {/* spacer so fixed header doesn't overlap content */}
+        <div className="h-[calc(4rem+env(safe-area-inset-top,0px))]" />
 
         <div className="mx-auto max-w-xl">
           {/* ══ ROW 1 — TODAY'S QUESTION (full width card) ═══════════════════════ */}

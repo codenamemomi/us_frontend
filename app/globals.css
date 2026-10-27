@@ -404,9 +404,15 @@ button { cursor: pointer; }
   background: rgba(255, 255, 255, 0.08);
   padding: 13px 14px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+@media (min-width: 640px) {
+  .field input, .field textarea {
+    font-size: 14px;
+  }
 }
 
 .field input:focus, .field textarea:focus {

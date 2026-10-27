@@ -340,7 +340,7 @@ export default function Home() {
                   placeholder={`Write something honest for ${partnerFirst}…`}
                   maxLength={2000}
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-white/20 bg-white/[.08] p-4 text-sm text-white placeholder-white/30 outline-none focus:border-[var(--a)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--a),transparent_80%)]"
+                  className="w-full resize-none rounded-2xl border border-white/20 bg-white/[.08] p-4 text-base sm:text-sm text-white placeholder-white/30 outline-none focus:border-[var(--a)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--a),transparent_80%)]"
                 />
                 <div className="flex items-center gap-3">
                   <motion.button
